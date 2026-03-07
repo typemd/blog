@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import { t } from '../i18n/ui';
+
+const locale = 'en' as const;
+
+const posts = (await getCollection('posts'))
+  .filter((post) => post.id.startsWith('en/') && !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title={t(locale, 'site.title')} locale={locale}>
+  <section class="hero">
+    <h1>{t(locale, 'hero.title')}</h1>
+    <p class="hero-sub">{t(locale, 'hero.subtitle')}</p>
+  </section>
+  <PostList posts={posts} locale={locale} />
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 6rem 0 4rem;
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 4.5rem;
+    font-weight: 400;
+    color: var(--text-heading);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    font-style: italic;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 4rem 0 3rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+    }
+  }
+</style>

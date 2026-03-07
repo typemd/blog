@@ -1,0 +1,125 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '../i18n/ui';
+import { t, getLocalePath } from '../i18n/ui';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  locale: Locale;
+}
+
+const { posts, locale } = Astro.props;
+const dateLocale = locale === 'zh-tw' ? 'zh-TW' : 'en-US';
+---
+
+<section class="posts">
+  {posts.map((post) => {
+    const date = post.data.date.toLocaleDateString(dateLocale, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+    const slug = post.id.replace(/^(en|zh-tw)\//, '');
+    return (
+      <a href={getLocalePath(locale, `/posts/${slug}/`)} class="post-card">
+        <div class="card-date">
+          <time datetime={post.data.date.toISOString()}>{date}</time>
+          {post.data.tags && post.data.tags.length > 0 && (
+            <span class="card-tags">
+              {post.data.tags.map((tag) => (
+                <span class="card-tag">{tag}</span>
+              ))}
+            </span>
+          )}
+        </div>
+        <h2>{post.data.title}</h2>
+        <p>{post.data.description}</p>
+        <span class="read-more">{t(locale, 'post.readMore')} &rarr;</span>
+      </a>
+    );
+  })}
+</section>
+
+<style>
+  .posts {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .post-card {
+    display: block;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+  }
+
+  .post-card:hover {
+    color: inherit;
+  }
+
+  .post-card:hover h2 {
+    color: var(--accent);
+  }
+
+  .post-card:hover .read-more {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .card-date {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .card-tag {
+    color: var(--accent-dim);
+  }
+
+  .post-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--text-heading);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .post-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .read-more {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: color 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+
+  @media (max-width: 640px) {
+    .post-card h2 {
+      font-size: 1.4rem;
+    }
+  }
+</style>

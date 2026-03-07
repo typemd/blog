@@ -1,0 +1,258 @@
+---
+import type { Locale } from '../i18n/ui';
+import { t, getLocalePath } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description?: string;
+  locale?: Locale;
+}
+
+const { title, locale = 'en' } = Astro.props;
+const description = Astro.props.description ?? t(locale, 'site.description');
+const htmlLang = locale === 'zh-tw' ? 'zh-TW' : 'en';
+
+const altLocale = locale === 'en' ? 'zh-tw' as const : 'en' as const;
+const altPath = getLocalePath(altLocale, Astro.url.pathname.replace(/^\/zh-tw/, '') || '/');
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="grain"></div>
+    <nav>
+      <a href={getLocalePath(locale, '/')} class="nav-brand">
+        <span class="nav-logo">T</span>
+        <span class="nav-title">TypeMD Blog</span>
+      </a>
+      <div class="nav-links">
+        <a href="https://typemd.io">{t(locale, 'nav.home')}</a>
+        <a href="https://docs.typemd.io">{t(locale, 'nav.docs')}</a>
+        <a href="https://github.com/typemd/typemd">GitHub</a>
+        <a href={altPath} class="lang-switch">{locale === 'en' ? '中文' : 'EN'}</a>
+      </div>
+    </nav>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <div class="footer-inner">
+        <p class="footer-brand">TypeMD</p>
+        <p class="footer-sub">{t(locale, 'footer.tagline')}</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg: #0f0f1a;
+    --bg-raised: #161625;
+    --bg-hover: #1c1c30;
+    --border: #232340;
+    --text: #c8c8d8;
+    --text-muted: #6b6b80;
+    --text-heading: #eaeaf0;
+    --accent: #6366f1;
+    --accent-dim: #4f46e5;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+    --content-width: 720px;
+    --page-width: 1080px;
+  }
+
+  html {
+    font-size: 17px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: var(--text-heading);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+
+<style>
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 2rem 2rem 0;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-heading);
+    text-decoration: none;
+  }
+
+  .nav-brand:hover {
+    color: var(--text-heading);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    border-radius: 6px;
+  }
+
+  .nav-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+
+  .lang-switch {
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.04em;
+  }
+
+  .lang-switch:hover {
+    border-color: var(--accent-dim);
+  }
+
+  main {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    min-height: calc(100vh - 200px);
+  }
+
+  footer {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .footer-inner {
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--text-heading);
+  }
+
+  .footer-sub {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 640px) {
+    nav {
+      padding: 1.5rem 1.25rem 0;
+    }
+
+    main {
+      padding: 0 1.25rem;
+    }
+
+    footer {
+      padding: 3rem 1.25rem;
+    }
+
+    .nav-links {
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+    }
+  }
+</style>

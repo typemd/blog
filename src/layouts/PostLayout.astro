@@ -1,0 +1,225 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Locale } from '../i18n/ui';
+import { t, getLocalePath } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  tags?: string[];
+  locale?: Locale;
+}
+
+const { title, description, date, tags, locale = 'en' } = Astro.props;
+
+const dateLocale = locale === 'zh-tw' ? 'zh-TW' : 'en-US';
+const formattedDate = date.toLocaleDateString(dateLocale, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} — TypeMD Blog`} description={description} locale={locale}>
+  <article>
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime={date.toISOString()}>{formattedDate}</time>
+        {tags && tags.length > 0 && (
+          <span class="meta-sep">/</span>
+          <span class="post-tags">
+            {tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </span>
+        )}
+      </div>
+      <h1>{title}</h1>
+      <p class="post-description">{description}</p>
+    </header>
+    <div class="post-body">
+      <slot />
+    </div>
+    <footer class="post-footer">
+      <a href={getLocalePath(locale, '/')} class="back-link">&larr; {t(locale, 'post.allPosts')}</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  article {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .post-header {
+    padding: 5rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  .meta-sep {
+    color: var(--border);
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    color: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--text-heading);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .post-description {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .post-body {
+    padding-bottom: 4rem;
+  }
+
+  .post-body :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 400;
+    color: var(--text-heading);
+    margin: 3rem 0 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .post-body :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text-heading);
+    margin: 2.5rem 0 0.75rem;
+  }
+
+  .post-body :global(p) {
+    margin-bottom: 1.25rem;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .post-body :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .post-body :global(blockquote) {
+    border-left: 2px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 2rem 0;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .post-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+  }
+
+  .post-body :global(pre) {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    line-height: 1.5;
+  }
+
+  .post-body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85rem;
+  }
+
+  .post-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  .post-body :global(strong) {
+    color: var(--text-heading);
+    font-weight: 500;
+  }
+
+  .post-body :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-dim);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s;
+  }
+
+  .post-body :global(a:hover) {
+    text-decoration-color: var(--accent);
+  }
+
+  .post-footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .post-header {
+      padding: 3rem 0 2rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+    }
+
+    .post-description {
+      font-size: 1.05rem;
+    }
+  }
+</style>
