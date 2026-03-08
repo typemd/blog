@@ -1,6 +1,6 @@
 ---
-title: "Why I'm Building TypeMD"
-description: "The story behind a local-first CLI for knowledge management — why files matter, what 'thinking in objects' means, and where we're headed."
+title: "Why I'm Building My Own Knowledge Management Tool"
+description: "The story behind TypeMD — where existing tools didn't fit my workflow, why files matter, and what 'thinking in objects' means."
 date: 2026-03-07
 tags: [devlog, philosophy]
 ---

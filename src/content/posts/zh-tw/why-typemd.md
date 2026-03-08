@@ -1,6 +1,6 @@
 ---
-title: "為什麼我要打造 TypeMD"
-description: "一個 local-first CLI 知識管理工具的誕生故事 — 為什麼檔案很重要、「用物件思考」是什麼意思、以及我們要往哪裡去。"
+title: "為什麼我要自己開發知識管理工具"
+description: "TypeMD 的誕生故事 — 現有工具哪裡不符合我的使用情境、檔案為什麼重要、「用物件思考」是什麼意思。"
 date: 2026-03-07
 tags: [開發日誌, 理念]
 ---
@@ -70,6 +70,8 @@ CLI 理解這些連結。你可以查詢、連結、遍歷你的知識圖譜 —
 
 但核心理念不會變：你的檔案是你的。工具服務資料，不是反過來。
 
+如果這個理念引起你的共鳴，專案在 [github.com/typemd/typemd](https://github.com/typemd/typemd) 開源。歡迎 star、開 issue、貢獻程式碼。
+
 ---
 
-如果這個理念引起你的共鳴，專案在 [github.com/typemd/typemd](https://github.com/typemd/typemd) 開源。歡迎 star、開 issue、貢獻程式碼。
+> 最後，這個工具源自於一個讀文件時間軸的過程，因為不管哪個工具用起來都很不順。突然靈機一動，就決定自己來寫一套工具，不用在等別人的 Roadmap 了。
