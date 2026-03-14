@@ -130,11 +130,7 @@ Close the TUI and reopen it — cursor position, selected object, and panel stat
 ## Upgrade
 
 ```bash
-# Homebrew
 brew upgrade typemd/tap/tmd
-
-# go install
-go install github.com/typemd/typemd/cmd/tmd@v0.2.0
 ```
 
 Or grab a pre-built binary from [GitHub Releases](https://github.com/typemd/typemd/releases/tag/v0.2.0).

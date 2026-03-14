@@ -114,11 +114,7 @@ No leaving the TUI. No remembering YAML syntax.
 ## Upgrade
 
 ```bash
-# Homebrew
 brew upgrade typemd/tap/tmd
-
-# go install
-go install github.com/typemd/typemd/cmd/tmd@v0.3.0
 ```
 
 Or grab a pre-built binary from [GitHub Releases](https://github.com/typemd/typemd/releases/tag/v0.3.0).

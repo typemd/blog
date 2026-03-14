@@ -130,11 +130,7 @@ properties:
 ## 升級方式
 
 ```bash
-# Homebrew
 brew upgrade typemd/tap/tmd
-
-# go install
-go install github.com/typemd/typemd/cmd/tmd@v0.2.0
 ```
 
 或從 [GitHub Releases](https://github.com/typemd/typemd/releases/tag/v0.2.0) 下載預編譯的執行檔。

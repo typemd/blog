@@ -68,17 +68,11 @@ tmd mcp
 
 ## 安裝
 
-Homebrew（macOS/Linux）：
-
 ```bash
 brew install typemd/tap/typemd-cli
 ```
 
-或者用 Go：
-
-```bash
-go install github.com/typemd/typemd/cmd/tmd@latest
-```
+或從 [GitHub Releases](https://github.com/typemd/typemd/releases/tag/v0.1.0) 下載預編譯的執行檔。
 
 ## 接下來
 

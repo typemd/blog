@@ -74,11 +74,7 @@ Homebrew (macOS/Linux):
 brew install typemd/tap/typemd-cli
 ```
 
-Or with Go:
-
-```bash
-go install github.com/typemd/typemd/cmd/tmd@latest
-```
+Or grab a pre-built binary from [GitHub Releases](https://github.com/typemd/typemd/releases/tag/v0.1.0).
 
 ## What's next
 
